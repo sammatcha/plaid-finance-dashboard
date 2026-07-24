@@ -1,8 +1,18 @@
-import { Kysely, PostgresDialect } from "kysely";
+import { Kysely, PostgresDialect , Generated } from "kysely";
 import { Pool } from "pg";
 
-// No tables defined yet — this will grow as the schema is built out.
-interface Database {}
+// tables defined here
+interface PlaidItemsTable {
+  id: Generated<number>;
+  user_id: string;
+  access_token: string;
+  item_id:string;
+  created_at: Generated<Date>;
+
+}
+interface Database {
+  plaid_items: PlaidItemsTable;
+}
 
 const dialect = new PostgresDialect({
   pool: new Pool({
