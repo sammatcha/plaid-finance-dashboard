@@ -1,0 +1,67 @@
+import { useEffect, useState } from "react"
+
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
+
+type Transaction = {
+  date: string
+  amount: number
+  personal_finance_category?: { primary: string | null } | null
+  category?: string[] | null
+}
+
+function getCurrentYearMonth() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, '0')
+  return `${year}-${month}`
+}
+
+export default function AvgTransaction() {
+  const [avg, setAvg] = useState<number | null>(null)
+
+  useEffect(() => {
+    const yearMonth = getCurrentYearMonth()
+
+    fetch(`${API_URL}/plaid/transactions`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!Array.isArray(data)) {
+          console.error('Unexpected transactions response:', data)
+          setAvg(0)
+          return
+        }
+
+        const monthTxs = data.filter(
+          (tx: Transaction) =>
+            tx.amount > 0 &&
+            tx.date?.startsWith(yearMonth) &&
+            tx.personal_finance_category?.primary !== 'TRANSFER_OUT' &&
+            !tx.category?.includes('Transfer')
+        )
+
+        if (monthTxs.length === 0) {
+          setAvg(0)
+          return
+        }
+
+        const total = monthTxs.reduce(
+          (sum: number, tx: Transaction) => sum + tx.amount,
+          0
+        )
+        setAvg(total / monthTxs.length)
+      })
+      .catch((err) => {
+        console.error('Failed to fetch avg transaction', err)
+        setAvg(0)
+      })
+  }, [])
+
+  return (
+    <div className="mt-6 min-w-[10rem] flex-1  rounded-xl bg-neutral-900 border-neutral-700 border text-white p-4">
+      <p className="text-base text-neutral-200 mb-2">Avg transaction</p>
+      <p className="text-2xl font-semibold tracking-tight">
+        {avg === null ? '—' : `$${avg.toFixed(2)}`}
+      </p>
+    </div>
+  )
+}

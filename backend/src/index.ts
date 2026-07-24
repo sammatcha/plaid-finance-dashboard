@@ -1,7 +1,7 @@
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
-import { exchangePublicToken, getLinkToken } from "./controller/PlaidController";
+import { exchangePublicToken, getAccountsData, getLinkToken, getTransactions } from "./controller/PlaidController";
 
 const app = express();
 const port = process.env.PORT ?? 4000;
@@ -14,6 +14,9 @@ app.get("/health", (_req, res) => {
 });
 app.get("/plaid/create-link-token", getLinkToken)
 app.post("/plaid/exchange-public-token", exchangePublicToken)
+app.get("/plaid/transactions", getTransactions)
+app.get("/plaid/get-accounts", getAccountsData)
+
 
 
 app.listen(port, () => {

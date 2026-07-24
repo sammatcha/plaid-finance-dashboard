@@ -15,7 +15,6 @@ export default function LinkAccountButton(){
     const { open, ready } = usePlaidLink({
         token: linkToken,
         onSuccess: (public_token) => {
-            console.log('Link succeeded, public_token:', public_token)
             fetch(`${API_URL}/plaid/exchange-public-token`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'},
@@ -26,13 +25,12 @@ export default function LinkAccountButton(){
             .catch((err)=> console.error('Failed to exchange public token', err))
         },
     })
-    console.log('ready:', ready, 'linkToken:', linkToken)
     return(
          <div className="flex-right ">
         <button onClick={() => open()}
         disabled={!ready}
-        className="border border-neutral-500 rounded-lg px-3 py-2 cursor-pointer">
-            <p className="text-slate-50">Connect Account</p>
+        className="border rounded-lg px-4 py-2 text-sm font-medium cursor-pointer text-white hover:bg-blue-600 disabled:opacity-50">
+            <p className="text-slate-50 font-medium text-base">Connect Account</p>
         </button>
     </div>
     )
