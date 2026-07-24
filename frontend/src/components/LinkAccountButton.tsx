@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePlaidLink } from 'react-plaid-link'
 
 export default function LinkAccountButton(){

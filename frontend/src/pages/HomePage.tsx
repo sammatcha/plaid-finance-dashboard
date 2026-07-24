@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import LinkAccountButton from '../components/LinkAccountButton'
 import ConnectedAccounts from '../components/ConnectedAccounts'
 import TransactionList from '../components/TransactionList'
@@ -6,7 +5,6 @@ import SpendingSummary from '../components/SpendingSummary'
 import TransactionCount from '../components/TransactionCount'
 import AvgTransaction from '../components/AvgTransaction'
 
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
 
 function HomePage() {
   // const [status, setStatus] = useState<string>('loading...')
