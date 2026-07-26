@@ -1,22 +1,11 @@
-import { useEffect, useState } from "react"
-
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
-
-type ConnectedAccount = {
+export type ConnectedAccount = {
     account_id: string
     name: string
     mask: string | null
     balances: {current: number | null }
 }
-export default function ConnectedAccounts(){
-    const [accounts, setAccounts] = useState<ConnectedAccount[]>([])
-    
-    useEffect(() =>{
-        fetch(`${API_URL}/plaid/get-accounts`)
-            .then((res) => res.json())
-            .then((data) => setAccounts(data[0] ? [data[0]] : []))
-            .catch((err) => console.error('Failed to fetch accounts', err))
-    }, [])
+
+export default function ConnectedAccounts({ accounts }: { accounts: ConnectedAccount[] }){
     return(
         <div className="max-w-5xl">
             {accounts.map((acct)=> (
