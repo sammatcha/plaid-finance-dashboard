@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { usePlaidLink } from 'react-plaid-link'
 
-export default function LinkAccountButton(){
+export default function LinkAccountButton({ onLinked }: { onLinked?: () => void }){
     const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
     const [ linkToken, setLinkToken] = useState<string | null>(null)
 
@@ -21,7 +21,10 @@ export default function LinkAccountButton(){
                 body: JSON.stringify({public_token}),
             })
             .then((res) => res.json())
-            .then((data) => console.log('Exchange successful:', data))
+            .then((data) => {
+                console.log('Exchange successful:', data)
+                onLinked?.()
+            })
             .catch((err)=> console.error('Failed to exchange public token', err))
         },
     })
