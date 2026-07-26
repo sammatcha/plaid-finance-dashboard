@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react"
-
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
-
-type Transaction = {
+export type Transaction = {
   transaction_id: string
   merchant_name: string | null
   name: string
   amount: number
+  date?: string
   personal_finance_category?: {
     primary: string | null
   } | null
@@ -29,22 +26,8 @@ function formatCategory(tx: Transaction) {
   return tx.category?.[0] ?? '—'
 }
 
-export default function TransactionList() {
-  const [transactions, setTransactions] = useState<Transaction[]>([])
-
-  useEffect(() => {
-    fetch(`${API_URL}/plaid/transactions`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setTransactions(data.slice(0, 5))
-        } else {
-          console.error('Unexpected transactions response:', data)
-          setTransactions([])
-        }
-      })
-      .catch((err) => console.error('Failed to fetch transactions', err))
-  }, [])
+export default function TransactionList({ transactions }: { transactions: Transaction[] }) {
+  const recent = transactions.slice(0, 5)
 
   return (
     <div className="mt-6 w-full max-w-5xl rounded-xl bg-neutral-900 text-white p-4 border border-neutral-700  ">
@@ -66,11 +49,11 @@ export default function TransactionList() {
         <p className="text-sm font-medium">Recent transactions</p>
       </div>
 
-      {transactions.length === 0 ? (
+      {recent.length === 0 ? (
         <p className="text-xs text-neutral-500">No transactions yet.</p>
       ) : (
         <div className="divide-y divide-neutral-700 ">
-          {transactions.map((tx) => (
+          {recent.map((tx) => (
             <div
               key={tx.transaction_id}
               className="grid grid-cols-1 md:grid-cols-3 gap-3 py-2.5 text-sm"
