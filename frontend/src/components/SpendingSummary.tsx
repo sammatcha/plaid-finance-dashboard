@@ -23,9 +23,9 @@ export default function SpendingSummary({ transactions }: { transactions: Transa
     .reduce((sum, tx) => sum + tx.amount, 0)
 
   return (
-    <div className="mt-6 min-w-[10rem] flex-1 rounded-xl bg-neutral-900 border-neutral-700 border text-white p-4">
-      <p className="text-base text-neutral-200 mb-2">Total spent (mtd)</p>
-      <p className="text-2xl font-semibold tracking-tight">
+    <div className="w-full min-w-0 rounded-xl bg-neutral-900 border-neutral-700 border text-white p-4">
+      <p className="text-sm md:text-base text-neutral-200 mb-2">Total spent (mtd)</p>
+      <p className="text-xl md:text-2xl font-semibold tracking-tight tabular-nums">
         ${totalSpent.toFixed(2)}
       </p>
     </div>

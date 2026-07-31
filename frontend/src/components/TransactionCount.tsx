@@ -21,9 +21,9 @@ export default function TransactionCount({ transactions }: { transactions: Trans
   const totalCount = transactions.filter((tx) => isMonthSpend(tx, yearMonth)).length
 
   return (
-    <div className="mt-6 min-w-[10rem] flex-1  rounded-xl bg-neutral-900 border-neutral-700 border text-white p-4">
-      <p className="text-base text-neutral-200 mb-2 text-nowrap">Transactions</p>
-      <p className="text-2xl font-semibold tracking-tight">{totalCount}</p>
+    <div className="w-full min-w-0 rounded-xl bg-neutral-900 border-neutral-700 border text-white p-4">
+      <p className="text-sm md:text-base text-neutral-200 mb-2">Transactions</p>
+      <p className="text-xl md:text-2xl font-semibold tracking-tight tabular-nums">{totalCount}</p>
     </div>
   )
 }

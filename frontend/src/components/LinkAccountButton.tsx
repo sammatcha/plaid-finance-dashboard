@@ -21,8 +21,7 @@ export default function LinkAccountButton({ onLinked }: { onLinked?: () => void 
                 body: JSON.stringify({public_token}),
             })
             .then((res) => res.json())
-            .then((data) => {
-                console.log('Exchange successful:', data)
+            .then(() => {
                 onLinked?.()
             })
             .catch((err)=> console.error('Failed to exchange public token', err))

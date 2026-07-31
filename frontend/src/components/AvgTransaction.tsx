@@ -25,9 +25,9 @@ export default function AvgTransaction({ transactions }: { transactions: Transac
       : monthTxs.reduce((sum, tx) => sum + tx.amount, 0) / monthTxs.length
 
   return (
-    <div className="mt-6 min-w-[10rem] flex-1  rounded-xl bg-neutral-900 border-neutral-700 border text-white p-4">
-      <p className="text-base text-neutral-200 mb-2">Avg transaction</p>
-      <p className="text-2xl font-semibold tracking-tight">
+    <div className="w-full min-w-0 rounded-xl bg-neutral-900 border-neutral-700 border text-white p-4">
+      <p className="text-sm md:text-base text-neutral-200 mb-2">Avg transaction</p>
+      <p className="text-xl md:text-2xl font-semibold tracking-tight tabular-nums">
         ${avg.toFixed(2)}
       </p>
     </div>
