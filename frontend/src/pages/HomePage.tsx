@@ -44,9 +44,9 @@ function HomePage() {
   }, [])
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className='text-2xl md:text-3xl'>Finance Dashboard</h1>
+    <div className="w-full min-w-0">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl">Finance Dashboard</h1>
         {status === 'empty' && <LinkAccountButton onLinked={loadDashboard} />}
       </div>
 
@@ -60,17 +60,15 @@ function HomePage() {
 
       {status === 'connected' && (
         <>
-          <p className="text-zinc-400 text-sm font-medium mb-2">Connected account: </p>
+          <p className="text-zinc-400 text-sm font-medium mb-1 md:mb-2">Connected account:</p>
           <ConnectedAccounts accounts={accounts} />
-          <div className='flex gap-8 flex-wrap max-w-5xl w-full items-center justify-center'>
+          <div className="mt-4 md:mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6 max-w-5xl w-full">
             <SpendingSummary transactions={transactions} />
             <TransactionCount transactions={transactions} />
             <AvgTransaction transactions={transactions} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <div className='md:col-span-2'>
-                 <TransactionList transactions={transactions}/>
-            </div>
+          <div className="mt-4 md:mt-6 max-w-5xl w-full min-w-0">
+            <TransactionList transactions={transactions} />
           </div>
         </>
       )}

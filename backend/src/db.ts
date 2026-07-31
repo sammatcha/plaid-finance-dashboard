@@ -10,8 +10,16 @@ interface PlaidItemsTable {
   created_at: Generated<Date>;
 
 }
+interface BudgetTable {
+  id: Generated<number>,
+	category: string,
+	amount: number,
+	month: string,
+	created_at: Generated<Date>
+}
 interface Database {
   plaid_items: PlaidItemsTable;
+  budget: BudgetTable
 }
 
 const dialect = new PostgresDialect({

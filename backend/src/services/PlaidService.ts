@@ -95,7 +95,7 @@ export async function fetchTransactions(){
 }
 
 export async function getAccounts(){
-     const access_token = await getAccessTokenForUser();
+    const access_token = await getAccessTokenForUser();
     const request: AccountsGetRequest = {
         access_token: access_token
     };

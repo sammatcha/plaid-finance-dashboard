@@ -7,18 +7,17 @@ export type ConnectedAccount = {
 
 export default function ConnectedAccounts({ accounts }: { accounts: ConnectedAccount[] }){
     return(
-        <div className="max-w-5xl">
+        <div className="max-w-5xl w-full min-w-0">
             {accounts.map((acct)=> (
                 <div
                     key={acct.account_id}
-                    className="flex items-center justify-between py-3 border-b border-neutral-700"
+                    className="flex items-center justify-between py-2 md:py-3 border-b border-neutral-700"
                 >
-                    <div className="flex-col">
-                        <p className="text-zinc-100 font-medium">{acct.name}</p>
+                    <div className="min-w-0">
+                        <p className="text-zinc-100 font-medium truncate">{acct.name}</p>
                         <p className="text-zinc-500">····{acct.mask}</p>
                     </div>
-                    <p className="text-zinc-100">${acct.balances.current}</p>
-                    
+                    <p className="shrink-0 text-zinc-100 tabular-nums">${acct.balances.current}</p>
                 </div>
             )) }
         </div>

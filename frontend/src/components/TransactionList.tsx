@@ -16,6 +16,7 @@ function formatAmount(amount: number) {
 
 function formatCategory(tx: Transaction) {
   const primary = tx.personal_finance_category?.primary
+  
   if (primary) {
     return primary
       .toLowerCase()
@@ -30,7 +31,7 @@ export default function TransactionList({ transactions }: { transactions: Transa
   const recent = transactions.slice(0, 5)
 
   return (
-    <div className="mt-6 w-full max-w-5xl rounded-xl bg-neutral-900 text-white p-4 border border-neutral-700  ">
+    <div className="w-full min-w-0 rounded-xl bg-neutral-900 text-white p-4 border border-neutral-700">
       <div className="flex items-center gap-2 mb-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +39,7 @@ export default function TransactionList({ transactions }: { transactions: Transa
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className="w-4 h-4 text-neutral-300"
+          className="w-4 h-4 shrink-0 text-neutral-300"
         >
           <path
             strokeLinecap="round"
@@ -52,17 +53,19 @@ export default function TransactionList({ transactions }: { transactions: Transa
       {recent.length === 0 ? (
         <p className="text-xs text-neutral-500">No transactions yet.</p>
       ) : (
-        <div className="divide-y divide-neutral-700 ">
+        <div className="divide-y divide-neutral-700">
           {recent.map((tx) => (
             <div
               key={tx.transaction_id}
-              className="grid grid-cols-1 md:grid-cols-3 gap-3 py-2.5 text-sm"
+              className="flex items-start justify-between gap-3 py-2.5 text-sm md:grid md:grid-cols-3 md:items-center"
             >
-              <p className="truncate">{tx.merchant_name ?? tx.name}</p>
-              <p className="text-neutral-300 whitespace-nowrap">
-                {formatCategory(tx)}
-              </p>
-              <p className="text-right whitespace-nowrap tabular-nums">
+              <div className="min-w-0 md:contents">
+                <p className="truncate">{tx.merchant_name ?? tx.name}</p>
+                <p className="text-neutral-400 text-xs md:text-sm md:text-neutral-300 truncate md:whitespace-nowrap">
+                  {formatCategory(tx)}
+                </p>
+              </div>
+              <p className="shrink-0 text-right whitespace-nowrap tabular-nums">
                 {formatAmount(tx.amount)}
               </p>
             </div>
