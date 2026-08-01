@@ -5,6 +5,7 @@ import TransactionList, { type Transaction } from '../components/TransactionList
 import SpendingSummary from '../components/SpendingSummary'
 import TransactionCount from '../components/TransactionCount'
 import AvgTransaction from '../components/AvgTransaction'
+import BudgetChart from '../components/BudgetChart'
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
 
@@ -66,6 +67,9 @@ function HomePage() {
             <SpendingSummary transactions={transactions} />
             <TransactionCount transactions={transactions} />
             <AvgTransaction transactions={transactions} />
+          </div>
+          <div className="mt-4 md:mt-6 max-w-5xl w-full min-w-0">
+            <BudgetChart/>
           </div>
           <div className="mt-4 md:mt-6 max-w-5xl w-full min-w-0">
             <TransactionList transactions={transactions} />
