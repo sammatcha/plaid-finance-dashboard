@@ -17,8 +17,13 @@ export async function compareBudget() {
 
     for (const tx of actual) {
         const category = tx.personal_finance_category?.primary
-        if(!category)continue
-        totals[category]= (totals[category] ?? 0 ) + tx.amount
+        if (!category) continue
+        if (!(tx.amount > 0)) continue
+        if (!tx.date?.startsWith('2026-07')) continue
+        if (category === 'TRANSFER_OUT') continue
+        if (tx.category?.includes('Transfer')) continue
+
+        totals[category] = (totals[category] ?? 0) + tx.amount
     }
 
     return budgets.map((budget) => {
