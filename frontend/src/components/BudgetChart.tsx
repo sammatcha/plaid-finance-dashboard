@@ -16,7 +16,10 @@ export default function BudgetChart() {
     useEffect(() => {
         fetch(`${API_URL}/budget`)
         .then((res) => res.json())
-        .then((data) => setBudgetData(data))
+        .then((data) => {
+            if (Array.isArray(data)) setBudgetData(data)
+            else console.error('Unexpected /budget response', data)
+        })
         .catch((err) => console.error(err))   
     }, [])
 

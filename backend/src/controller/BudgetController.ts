@@ -6,6 +6,7 @@ export async function fetchBudget(req:Request, res:Response) {
         const response = await compareBudget();
         res.json(response)
     }catch(e) {
+        console.error("fetchBudget error:", e)
         res.status(500).json({error: "failed to fetch budget comparison"})
     }
 }
