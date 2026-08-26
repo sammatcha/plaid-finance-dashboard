@@ -3,6 +3,7 @@ import "dotenv/config";
 import express from "express";
 import { exchangePublicToken, getAccountsData, getLinkToken, getTransactions } from "./controller/PlaidController";
 import { fetchBudget } from "./controller/BudgetController";
+import { ensureSchema } from "./db";
 
 const app = express();
 const port = process.env.PORT ?? 4000;
@@ -21,6 +22,13 @@ app.get("/budget", fetchBudget)
 
 
 
-app.listen(port, () => {
-  console.log(`Backend server listening on port ${port}`);
-});
+ensureSchema()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Backend server listening on port ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error("Failed to connect to the database or create tables", error);
+    process.exit(1);
+  });

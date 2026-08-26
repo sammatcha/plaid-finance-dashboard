@@ -20,7 +20,12 @@ export default function LinkAccountButton({ onLinked }: { onLinked?: () => void 
                 headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify({public_token}),
             })
-            .then((res) => res.json())
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error('Failed to exchange public token')
+                }
+                return res.json()
+            })
             .then(() => {
                 onLinked?.()
             })

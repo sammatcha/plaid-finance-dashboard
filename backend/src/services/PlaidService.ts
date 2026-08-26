@@ -43,15 +43,31 @@ try{
     const exchangeTokenResponse = await plaidClient.itemPublicTokenExchange(exchangeRequest) 
     const accessToken = exchangeTokenResponse.data.access_token;
     const itemId = exchangeTokenResponse.data.item_id;
-    //insert db 
-    await db
-        .insertInto("plaid_items")
-        .values({
-            user_id: "test-user-1",
-            access_token: accessToken,
-            item_id: itemId
-        })
-        .execute();
+    const existing = await db
+        .selectFrom("plaid_items")
+        .select("id")
+        .where("user_id", "=", "test-user-1")
+        .executeTakeFirst();
+
+    if (existing) {
+        await db
+            .updateTable("plaid_items")
+            .set({
+                access_token: accessToken,
+                item_id: itemId,
+            })
+            .where("id", "=", existing.id)
+            .execute();
+    } else {
+        await db
+            .insertInto("plaid_items")
+            .values({
+                user_id: "test-user-1",
+                access_token: accessToken,
+                item_id: itemId,
+            })
+            .execute();
+    }
     return accessToken;
 }catch(e)
     {
