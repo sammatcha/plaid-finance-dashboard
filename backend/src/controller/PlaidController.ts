@@ -7,6 +7,7 @@ export async function exchangePublicToken(req:Request, res:Response){
         const response = await exchangeHelper(publicToken)
         res.json(response)
     }catch(e){
+        console.error("Failed to exchange public token for access token", e)
         res.status(500).json({error: "Failed to exchange public token for access token"})
     }
 }
@@ -34,6 +35,7 @@ export async function getAccountsData(req:Request, res:Response){
         const response = await getAccounts()
         res.json(response)
     }catch(e){
+        console.error("Failed to get accounts", e)
         res.status(500).json({error: "Failed to get accounts"})
     }
 }
