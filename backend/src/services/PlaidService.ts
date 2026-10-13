@@ -4,6 +4,13 @@ import { plaidClient } from "../plaid";
 import { Products, CountryCode } from "plaid";
 import { db } from "../db";
 
+export function getPlaidErrorCode(error: unknown): string | undefined {
+    if (error && typeof error === "object" && "response" in error) {
+        const data = (error as { response?: { data?: { error_code?: string } } }).response?.data
+        return data?.error_code
+    }
+}
+
 //helper
 export async function getAccessTokenForUser(){
     const row = await db
@@ -96,6 +103,26 @@ export async function linkCreateToken(){
         }
 }
 
+export async function linkCreateUpdateToken(){
+        const access_token = await getAccessTokenForUser();
+        const request: LinkTokenCreateRequest = {
+            user: {
+                client_user_id: "test-user-1"
+            },
+            client_name: 'Finance Dashboard App',
+            country_codes: [CountryCode.Us],
+            language: 'en',
+            access_token,
+        };
+        try{
+            const response =  await plaidClient.linkTokenCreate(request);
+            return response.data.link_token;
+        }catch(e){
+            console.error("error creating update link token", e)
+            throw e
+        }
+}
+
 export async function fetchTransactions(){
     const access_token = await getAccessTokenForUser();
     try{
@@ -120,7 +147,7 @@ export async function getAccounts(){
         const accounts = response.data.accounts
         return accounts;
     } catch(e){
-        console.error("Failed to get accounts")
+        console.error("Failed to get accounts", e)
         throw e;
     }
 }

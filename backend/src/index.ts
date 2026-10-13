@@ -1,7 +1,7 @@
 import cors from "cors";
 import "dotenv/config";
 import express from "express";
-import { exchangePublicToken, getAccountsData, getLinkToken, getTransactions } from "./controller/PlaidController";
+import { exchangePublicToken, getAccountsData, getLinkToken, getTransactions, getUpdateLinkToken } from "./controller/PlaidController";
 import { fetchBudget } from "./controller/BudgetController";
 import { ensureSchema } from "./db";
 
@@ -15,6 +15,7 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 app.get("/plaid/create-link-token", getLinkToken)
+app.get("/plaid/create-update-link-token", getUpdateLinkToken)
 app.post("/plaid/exchange-public-token", exchangePublicToken)
 app.get("/plaid/transactions", getTransactions)
 app.get("/plaid/get-accounts", getAccountsData)
