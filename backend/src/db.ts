@@ -23,8 +23,11 @@ interface Database {
 }
 
 const connectionString = process.env.DATABASE_URL;
-const needsSsl = Boolean(connectionString?.includes("render.com"));
-
+const needsSsl = Boolean(
+  connectionString &&
+  !connectionString.includes("localhost") &&
+  !connectionString.includes("127.0.0.1")
+);
 const dialect = new PostgresDialect({
   pool: new Pool({
     connectionString,

@@ -25,6 +25,55 @@ export async function getAccessTokenForUser(){
     return row?.access_token
 }
 
+const tokenInvalidCodes = new Set([
+    "ITEM_LOGIN_REQUIRED",
+    "INVALID_ACCESS_TOKEN",
+    "ITEM_NOT_FOUND",
+])
+
+export type DemoHealthReason =
+    | "user_missing"
+    | "token_invalid"
+    | "empty_data"
+    | "db_unavailable"
+    | "plaid_unavailable"
+
+export async function checkDemoUserHealth(): Promise<DemoHealthReason | undefined> {
+    let accessToken: string
+    try {
+        const row = await db
+            .selectFrom("plaid_items")
+            .select("access_token")
+            .where("user_id", "=", "test-user-1")
+            .executeTakeFirst()
+
+        if (!row?.access_token) {
+            return "user_missing"
+        }
+        accessToken = row.access_token
+    } catch (error) {
+        console.error("Deep health check failed to read the demo user", error)
+        return "db_unavailable"
+    }
+
+    try {
+        const request: AccountsGetRequest = {
+            access_token: accessToken,
+        }
+        const response = await plaidClient.accountsGet(request, { timeout: 10_000 })
+        if (response.data.accounts.length === 0) {
+            return "empty_data"
+        }
+    } catch (error) {
+        const errorCode = getPlaidErrorCode(error)
+        if (errorCode !== undefined && tokenInvalidCodes.has(errorCode)) {
+            return "token_invalid"
+        }
+        console.error("Deep health check failed to reach Plaid", error)
+        return "plaid_unavailable"
+    }
+}
+
 export async function createSandboxPublicToken(){
 const institutionID= "ins_109508";
 const publicTokenRequest: SandboxPublicTokenCreateRequest = {
